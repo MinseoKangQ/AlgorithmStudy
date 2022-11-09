@@ -1,59 +1,71 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_VERTICES 100
-int parent[MAX_VERTICES]; // 초기 모두 -1로 설정
-
+int parent[MAX_VERTICES];
 
 // parent 배열 초기화
 void set_init(int n) {
 
-	for (int i = 0; i < n; i++) parent[i] = 1;
+	for (int i = 0; i < n; i++) parent[i] = -1;
 
 }
+
 // 간선의 정보
 struct Edge {
+
 	int start, end, weight;
+
 };
 
 // 그래프 정보
 typedef struct GraphType {
+
 	int n; // 간선의 개수
 	struct Edge edges[2 * MAX_VERTICES];
-}GraphType;
+
+} GraphType;
 
 // 초기화
 void graph_init(GraphType* g) {
+
 	g->n = 0;
 	for (int i = 0; i < 2 * MAX_VERTICES; i++) {
 		g->edges[i].start = 0;
 		g->edges[i].end = 0;
 		g->edges[i].weight = 999; // 가중치 매우 크다 = 간선 존재 X
 	}
+
 }
 
 // 간선 삽입
 void insert_edge(GraphType* g, int start, int end, int weight) {
+
 	g->edges[g->n].start = start;
 	g->edges[g->n].end = end;
 	g->edges[g->n].weight = weight;
 	g->n++;
+
 }
 
 // 사이클 여부 판정 함수
 int set_find(int curr) {
+
 	// 부모노드가 존재하느냐
 	if (parent[curr] == -1)
 		return curr;
 	while (parent[curr] != -1) curr = parent[curr]; // 부모의 부모를 다시 curr로
 	return curr;
+
 }
 
 void set_union(int a, int b) {
+
 	int root1 = set_find(a); // 5 (uset에 대한 부모노드)
 	int root2 = set_find(b); // 0 (vset에 대한 부모노드)
 	if (root1 != root2) { // 간선 가능
 		parent[root1] = root2;
 	}
+
 }
 
 // qsort 함수의 정렬방식을 결정하는 함수 (오름차순이냐 내림차순이냐)
@@ -79,10 +91,10 @@ void kruskal(GraphType* g) {
 	// 정렬 함수, 
 	// 첫번째 매개변수 = 정렬하기 위한 데이터 집합
 	// 두번째 = 정렬하기 위한 데이터 개수
-	// 세번쩨 = 한 데이터의 크기 (ex. int = 4 => sizeof 연산자 사용)
+	// 세번째 = 한 데이터의 크기 (ex. int = 4 => sizeof 연산자 사용)
 	// 네번째 = 정렬을 수행하는 방식에 대한 함수를 기록
 
-	qsort(g->edges, g->n, sizeof(struct Edge), compare); // compare 함수 작성해야함
+	qsort(g->edges, g->n, sizeof(struct Edge), compare); // compare 함수 개발자가 작성
 
 	set_init(g->n); // Parent값 -1로 초기화 해야함
 
@@ -103,6 +115,7 @@ void kruskal(GraphType* g) {
 		}
 		i++;
 	}
+
 }
 
 int main() {
