@@ -1,4 +1,4 @@
-신장 트리 (spanning tree)
+신장 트리 (Spanning Tree)
 ----
 ***
 
